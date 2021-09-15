@@ -1,0 +1,27 @@
+@()
+
+@main("Google Support Articles") {
+
+    <div id="loading-image" style="display: none">
+        <img src="@routes.Assets.versioned("images/flip-flop.gif")" alt="Loading" />
+    </div>
+
+    <script src="@routes.Assets.versioned("javascripts/jquery-3.6.0.min.js")"></script>
+    <script type="text/javascript">
+        $.ajax({
+            type: 'GET',
+            dataType: 'json',
+            data: String,
+            url: '@routes.GoogleSupportArticlesController.scrape',
+            beforeSend: function () {
+                $('#loading-image').show()
+            },
+            complete: function () {
+                $('#loading-image').hide()
+            },
+            success: function (data) {
+                alert(data);
+            }
+        })
+    </script>
+}

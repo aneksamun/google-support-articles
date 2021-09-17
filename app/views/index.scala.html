@@ -24,9 +24,9 @@
                     $('#articles').empty();
                     $(data).each(function (index, product) {
                         $('#articles').append(
-                                `<table><tr><th colspan="2">${product.name}</th></tr>${product.articles.map(function (article) {
-                                    return `<tr><td><i>${article.headline}</i></td><td><a href="${article.link}" target="_blank">${article.link}</a></td></tr>`;
-                                }).join("")}</table>`
+                            `<table><tr><th colspan="2">${product.name}</th></tr>${product.articles.map(function (article) {
+                             return `<tr><td><i>${article.headline}</i></td><td><a href="${article.link}" target="_blank">${article.link}</a></td></tr>`;
+                            }).join("")}</table>`
                         );
                     });
                 }

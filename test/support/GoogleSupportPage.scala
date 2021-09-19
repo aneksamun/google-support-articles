@@ -18,7 +18,7 @@ object GoogleSupportPage {
   case object Main extends GoogleSupportPage("main.html")
   case object Chrome extends GoogleSupportPage("chrome.html")
   case object Gmail extends GoogleSupportPage("gmail.html")
-  case object Youtube extends GoogleSupportPage("youtube.html")
+  case object YouTube extends GoogleSupportPage("youtube.html")
   case object Account extends GoogleSupportPage("account.html")
 
   implicit def showPage[A <: GoogleSupportPage]: Show[A] = (page: A) =>

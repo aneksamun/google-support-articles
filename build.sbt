@@ -9,9 +9,9 @@ scalaVersion := "2.13.6"
 
 libraryDependencies ++= Seq(
   guice,
-  "net.ruippeixotog"       %% "scala-scraper"      % "2.2.1",
-  "org.scalatestplus.play" %% "scalatestplus-play" % "5.1.0"  % Test,
-  "com.github.tomakehurst" %  "wiremock-jre8"      % "2.27.2" % Test
+  "net.ruippeixotog"       %% "scala-scraper"          % "2.2.1",
+  "org.scalatestplus.play" %% "scalatestplus-play"     % "5.1.0"  % Test,
+  "org.mock-server"         % "mockserver-netty"       % "5.11.2" % Test
 )
 
 scalacOptions ++= Seq(
@@ -23,8 +23,8 @@ scalacOptions ++= Seq(
   "-language:implicitConversions",
   "-language:existentials",
   "-feature",
-//  "-Xfatal-warnings",
-//  "-Ywarn-dead-code",
+  "-Xfatal-warnings",
+  "-Ywarn-dead-code",
 //  "-Ywarn-extra-implicit",
 //  "-Ywarn-unused:implicits",
 //  "-Ywarn-unused:imports",

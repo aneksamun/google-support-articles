@@ -1,39 +1,53 @@
 package support
 
-import com.github.tomakehurst.wiremock.WireMockServer
-import com.github.tomakehurst.wiremock.client.WireMock._
-import com.github.tomakehurst.wiremock.core.WireMockConfiguration.options
+import org.mockserver.integration.ClientAndServer
+import org.mockserver.integration.ClientAndServer.startClientAndServer
+import org.mockserver.model.HttpRequest.request
+import org.mockserver.model.HttpResponse.response
+import play.api.http.Status.OK
 import scalaz.Scalaz.ToShowOps
 import support.GoogleSupportPage._
 
 import java.net.URL
 
-final case class GoogleServerMock private(server: WireMockServer) extends AutoCloseable {
-  server.start()
-  configureFor(baseUrl.getProtocol, baseUrl.getHost, baseUrl.getPort)
+class GoogleServerMock private(server: ClientAndServer) extends AutoCloseable {
+  val baseUrl = new URL(s"http://localhost:${server.getPort}")
 
-  lazy val baseUrl = new URL(server.baseUrl())
+  server
+    .when(request().withPath("/"))
+    .respond(response()
+      .withBody(GoogleSupportPage.Main.show)
+      .withStatusCode(OK))
 
-  stubFor(get(urlEqualTo("/"))
-    .willReturn(ok().withBody(GoogleSupportPage.Main.show)))
+  server
+    .when(request().withPath("/chrome"))
+    .respond(response()
+      .withBody(GoogleSupportPage.Chrome.show)
+      .withStatusCode(OK))
 
-  stubFor(get(urlEqualTo("/chrome/?hl=en"))
-    .willReturn(ok().withBody(GoogleSupportPage.Chrome.show)))
+  server
+    .when(request().withPath("/mail"))
+    .respond(response()
+      .withBody(GoogleSupportPage.Gmail.show)
+      .withStatusCode(OK))
 
-  stubFor(get(urlEqualTo("/mail/?hl=en"))
-    .willReturn(ok().withBody(GoogleSupportPage.Gmail.show)))
+  server
+    .when(request().withPath("/accounts"))
+    .respond(response()
+      .withBody(GoogleSupportPage.Account.show)
+      .withStatusCode(OK))
 
-  stubFor(get(urlEqualTo("/accounts/?hl=en"))
-    .willReturn(ok().withBody(GoogleSupportPage.Account.show)))
+  server
+    .when(request().withPath("/youtube"))
+    .respond(response()
+      .withBody(GoogleSupportPage.YouTube.show)
+      .withStatusCode(OK))
 
-  stubFor(get(urlEqualTo("/youtube/?hl=en"))
-    .willReturn(ok().withBody(GoogleSupportPage.Youtube.show)))
-
-  def close(): Unit = server.shutdown()
+  def close(): Unit = server.close()
 }
 
 object GoogleServerMock {
 
   def apply(): GoogleServerMock =
-    GoogleServerMock(new WireMockServer(options().dynamicPort()))
+    new GoogleServerMock(startClientAndServer())
 }

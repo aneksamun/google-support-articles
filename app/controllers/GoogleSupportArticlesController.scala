@@ -11,14 +11,11 @@ import scalaz.Functor
 import scalaz.Scalaz.futureInstance
 
 import javax.inject.Inject
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class GoogleSupportArticlesController @Inject()(val controllerComponents: ControllerComponents, config: ScrapingConfig)
-  extends BaseController {
-
-  implicit val executionContext = controllerComponents.executionContext
-  implicit val actorSystem = ActorSystem()
+                                               (implicit ec: ExecutionContext, actorSystem: ActorSystem) extends BaseController {
 
   def index(): Action[AnyContent] = Action { implicit request =>
     Ok(views.html.index())

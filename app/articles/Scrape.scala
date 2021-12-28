@@ -9,6 +9,7 @@ import scalaz.Functor
 
 import java.net.URI
 import scala.concurrent.{ExecutionContext, Future}
+import scala.util.Try
 
 object Scrape {
 
@@ -38,21 +39,25 @@ object Scrape {
         )
       }
 
-    def extractArticles(product: (String, URI)): Future[Product] =
-      Future(browser.get(product._2.toString) >> elements("a.article-link")).map(links =>
-        Product(
-          name = product._1,
-          articles = links.map { a =>
-            Article(
-              headline = a.text,
-              link = Uri.combine(builder.uri, a.attr("href"))
-            )
-          }.toSeq
+    def extractArticles(product: (String, URI)): Future[Option[Product]] =
+      Future(Try {
+        browser.get(product._2.toString) >> elements("a.article-link").map(links =>
+          Product(
+            name = product._1,
+            articles = links.map { a =>
+              Article(
+                headline = a.text,
+                link = Uri.combine(builder.uri, a.attr("href"))
+              )
+            }.toSeq
+          )
         )
-      )
+      }.toOption)
 
     Source(loadPage |> extractProducts)
       .mapAsync(builder.limit getOrElse 100)(extractArticles)
+      .filter(_.nonEmpty)
+      .map(_.get)
       .runWith(Sink.seq)
   }
 }

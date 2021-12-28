@@ -25,11 +25,11 @@ scalacOptions ++= Seq(
   "-feature",
   "-Xfatal-warnings",
   "-Ywarn-dead-code",
-//  "-Ywarn-extra-implicit",
-//  "-Ywarn-unused:implicits",
+  "-Ywarn-extra-implicit",
+  "-Ywarn-unused:implicits",
 //  "-Ywarn-unused:imports",
-//  "-Ywarn-unused:locals",
-//  "-Ywarn-unused:params",
-//  "-Ywarn-unused:privates",
-//  "-Ywarn-value-discard"
+  "-Ywarn-unused:locals",
+  "-Ywarn-unused:params",
+  "-Ywarn-unused:privates",
+  "-Ywarn-value-discard"
 )

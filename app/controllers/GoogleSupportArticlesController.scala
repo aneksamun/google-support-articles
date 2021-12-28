@@ -17,11 +17,11 @@ import scala.concurrent.{ExecutionContext, Future}
 class GoogleSupportArticlesController @Inject()(val controllerComponents: ControllerComponents, config: ScrapingConfig)
                                                (implicit ec: ExecutionContext, actorSystem: ActorSystem) extends BaseController {
 
-  def index(): Action[AnyContent] = Action { implicit request =>
+  def index(): Action[AnyContent] = Action {
     Ok(views.html.index())
   }
 
-  def scrape(): Action[AnyContent] = Action.async { implicit request =>
+  def scrape(): Action[AnyContent] = Action.async {
     def scrapeArticles =
       Scrape(config.googleSupportUri) limitConcurrency config.maxConcurrent
 
